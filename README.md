@@ -1,10 +1,10 @@
-# 🚀 Platform Engineering Lab
+# Platform Engineering Lab
 
 This project demonstrates building a mini platform engineering stack locally using Kubernetes and GitOps principles.
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - Kubernetes (local cluster)
 - Kind (Kubernetes in Docker)
@@ -13,7 +13,7 @@ This project demonstrates building a mini platform engineering stack locally usi
 
 ---
 
-## 📦 Step 1: Install Prerequisites
+## Step 1: Install Prerequisites
 
 ### 1. Install Docker Desktop
 Download and install Docker Desktop and ensure it is running.
@@ -35,7 +35,7 @@ Verify:
 
 ---
 
-## ⚙️ Step 2: Create Kubernetes Cluster
+## Step 2: Create Kubernetes Cluster
 
 Create a local cluster using Kind:
 
@@ -63,12 +63,12 @@ Check system pods:
 
 ---
 
-## 🚀 Step 3: Deploy First Application (nginx)
+## Step 3: Deploy First Application (nginx)
 
 Create deployment:
 
 
-    kubectl create deployment nginx --image=nginx
+    kubectl apply -f kubernetes/nginx-deployment.yaml
 
 
 Verify:
@@ -80,12 +80,12 @@ Verify:
 
 ---
 
-## 🌐 Step 4: Expose the Application
+## Step 4: Expose the Application
 
 Expose deployment as a service:
 
 
-    kubectl expose deployment nginx --port=80 --type=NodePort
+    kubectl apply -f kubernetes/nginx-service.yaml
 
 
 Check service:
@@ -96,12 +96,7 @@ Check service:
 
 ---
 
-## 🔗 Step 5: Access the Application
-
-Port forward to access locally:
-
-
-    kubectl port-forward service/nginx 8080:80
+## Step 5: Access the Application
 
 
 Open in browser:
@@ -111,5 +106,6 @@ Open in browser:
 
 
 You should see the nginx welcome page.
+![nginx home page](image.png)
 
 
