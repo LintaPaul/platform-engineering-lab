@@ -11,6 +11,82 @@ This project demonstrates building a mini platform engineering stack locally usi
 - Docker Desktop
 - kubectl
 
+
+## Architecture
+                         ┌────────────────────────────┐
+                         │        👨‍💻 Developer        │
+                         │   (Push code / YAML)       │
+                         └────────────┬───────────────┘
+                                      │
+                                      ▼
+                         ┌────────────────────────────┐
+                         │        GitHub Repo         │
+                         │  (K8s Manifests + IaC)     │
+                         └────────────┬───────────────┘
+                                      │
+                          (GitOps via ArgoCD)
+                                      │
+                                      ▼
+        ┌────────────────────────────────────────────────────────┐
+        │              Kubernetes Cluster (Kind)                 │
+        │                                                        │
+        │  ┌──────────────────────┐       ┌────────────────────┐ │
+        │  │   Nginx Deployment   │       │  Prometheus Deploy │ │
+        │  │                      │       │                    │ │
+        │  │   ┌──────────────┐   │       │  ┌──────────────┐ │ │
+        │  │   │  Nginx Pod   │   │       │  │ Prometheus   │ │ │
+        │  │   │              │   │       │  │    Pod       │ │ │
+        │  │   └──────────────┘   │       │  └──────────────┘ │ │
+        │  └─────────┬────────────┘       └─────────┬──────────┘ │
+        │            │                              │            │
+        │            ▼                              ▼            │
+        │   ┌──────────────────┐         ┌──────────────────┐    │
+        │   │ Nginx Service    │         │ Prometheus SVC   │    │
+        │   │ (ClusterIP)      │         │ (ClusterIP)      │    │
+        │   └────────┬─────────┘         └────────┬─────────┘    │
+        │            │                              │            │
+        │            │                              │            │
+        │            ▼                              ▼            │
+        │        (Traffic)                  (Metrics scrape)     │
+        │                                                        │
+        │                         ┌────────────────────┐         │
+        │                         │ Grafana Deployment │         │
+        │                         │                    │         │
+        │                         │  ┌──────────────┐  │         │
+        │                         │  │  Grafana Pod │  │         │
+        │                         │  └──────────────┘  │         │
+        │                         └─────────┬──────────┘         │
+        │                                   │                    │
+        │                                   ▼                    │
+        │                          ┌──────────────────┐          │
+        │                          │  Grafana SVC     │          │
+        │                          │  (ClusterIP)     │          │
+        │                          └────────┬─────────┘          │
+        │                                   │                    │
+        └───────────────────────────────────┼────────────────────┘
+                                            │
+                                            ▼
+                                 ┌────────────────────┐
+                                 │   Ingress /        │
+                                 │   Port Forward     │
+                                 └────────┬───────────┘
+                                          │
+                                          ▼
+                                 ┌────────────────────┐
+                                 │      🌐 User        │
+                                 │   Browser Access   │
+                                 └────────────────────┘
+
+
+        ┌──────────────────────────────────────────────┐
+        │             Terraform (IaC Layer)            │
+        │                                              │
+        │  - Provisions infra (future: cloud cluster)  │
+        │  - Manages resources declaratively           │
+        └──────────────────────────────────────────────┘
+
+
+
 ---
 
 ## Step 1: Install Prerequisites
