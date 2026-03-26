@@ -182,6 +182,14 @@ Open in browser:
 
 
 You should see the nginx welcome page.
-![nginx home page](image.png)
+![nginx home page](static/image.png)
 
 
+
+## Step 6: Monitoring Stack
+- Prometheus for metrics collection (running at port 9090)
+![prometheus](static/image-1.png)
+- Grafana for visualization (running at 3000, prometheus connected as data source)
+- Services exposed internally using ClusterIP
+- Grafana connected to Prometheus via Kubernetes service DNS
+![grafana](static/image-2.png)
