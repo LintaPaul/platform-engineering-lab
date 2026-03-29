@@ -193,3 +193,22 @@ You should see the nginx welcome page.
 - Services exposed internally using ClusterIP
 - Grafana connected to Prometheus via Kubernetes service DNS
 ![grafana](static/image-2.png)
+
+## Step 7: Setup GitOps with ArgoCD
+#### Install ArgoCD
+  kubectl create namespace argocd
+  kubectl apply --server-side --force-conflicts -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+#### Access ArgoCD UI
+
+   kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+ Open: https://localhost:8080
+
+
+
+## Step 8: Create GitOps Application
+- Connect your GitHub repo in ArgoCD
+- Create a new application:
+  - Path: `kubernetes/`
+  - Sync Policy: Automatic
